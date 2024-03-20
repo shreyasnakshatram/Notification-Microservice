@@ -17,7 +17,6 @@ def create_notification_template_api(request: CreateNotificationTemplate, resp: 
         return JSONResponse(status_code=resp['status_code'],content=resp)
     # if resp["isAuthorized"]:
     #     request.performed_by_id = resp["setters"]["performed_by_id"]
-    #     request.performed_by_type = resp["setters"]["performed_by_type"]
     try:
         create_template = create_notification_template(request.dict())
         return JSONResponse(status_code=200,content=json_encoder(create_template))
@@ -32,7 +31,6 @@ def delete_notification_template_api(request: DeleteNotificationTemplate, resp: 
         return JSONResponse(status_code=resp['status_code'],content=resp)
     # if resp["isAuthorized"]:
     #     request.performed_by_id = resp["setters"]["performed_by_id"]
-    #     request.performed_by_type = resp["setters"]["performed_by_type"]
     try:
         delete_template = delete_notification_template(request.dict())
         return JSONResponse(status_code=200,content=json_encoder(delete_template))
@@ -49,14 +47,13 @@ def update_notification_template_api(
         return JSONResponse(status_code=resp["status_code"], content=resp)
     # if resp["isAuthorized"]:
     #     request.performed_by_id = resp["setters"]["performed_by_id"]
-    #     request.performed_by_type = resp["setters"]["performed_by_type"]
-    # try:
-    data = update_notification_template(request.dict())
-    return JSONResponse(status_code=200, content=json_encoder(data))
-    # except HTTPException as e:
-    #     raise
-    # except Exception as e:
-    #     return JSONResponse(status_code=500, content={ "success": False, 'error': str(e) })
+    try:
+        data = update_notification_template(request.dict())
+        return JSONResponse(status_code=200, content=json_encoder(data))
+    except HTTPException as e:
+        raise
+    except Exception as e:
+        return JSONResponse(status_code=500, content={ "success": False, 'error': str(e) })
 
 @notification_template_router.get("/get_notification_template")
 def get_notification_template_api(

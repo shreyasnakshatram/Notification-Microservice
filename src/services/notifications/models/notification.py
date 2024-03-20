@@ -1,6 +1,7 @@
 from peewee import *
 import datetime
 from database.db_session import db
+from playhouse.postgres_ext import BinaryJSONField
 
 class BaseModel(Model):
     class Meta:
@@ -8,8 +9,8 @@ class BaseModel(Model):
         only_save_dirty = True
 
 class Notification(BaseModel):
-    id = UUIDField(index=True, primary_key = True)
-    notification_data = TextField(null=True, index=True)
+    id = UUIDField(constraints=[SQL("DEFAULT gen_random_uuid()")], index=True, primary_key = True)
+    notification_data = BinaryJSONField(null=True, index=True)
     user_id = UUIDField(index = True)
     # order_id: int
     # customer_email: str
